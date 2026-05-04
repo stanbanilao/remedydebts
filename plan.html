@@ -1,1 +1,91 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Plan - Remedy Debt Solutions</title>
+  <meta name="description" content="Our simple 3-step debt counselling process in South Africa.">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="h-full">
+  <div class="page-wrapper">
+    <!-- HEADER -->
+    <header>
+      <nav>
+        <div class="logo">
+          <span class="blue">Remedy</span> 
+          <span class="accent">Debt</span> 
+          <span class="blue">Solutions</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="plan.html">The Plan</a></li>
+          <li><a href="why.html">Why Us</a></li>
+          <li><a href="reviews.html">Reviews</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <a href="#" id="header-cta" class="cta-btn" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="message-circle"></i> 
+          <span>WhatsApp Us</span>
+        </a>
+      </nav>
+    </header>
 
+    <!-- MAIN CONTENT -->
+    <section id="plan" class="content">
+      <div class="section-header">
+        <span class="eyebrow">The Process</span>
+        <h2 class="section-title">A simple 3-step <em>plan</em></h2>
+      </div>
+      
+      <div class="plan-grid">
+        <div class="plan-card">
+          <div class="plan-num">01</div>
+          <h3>Free Assessment</h3>
+          <p>We review your income, expenses and debts to see if debt review is right for you.</p>
+        </div>
+        
+        <div class="plan-card">
+          <div class="plan-num">02</div>
+          <h3>Negotiate &amp; Restructure</h3>
+          <p>We negotiate lower monthly payments with your creditors and protect your assets.</p>
+        </div>
+        
+        <div class="plan-card">
+          <div class="plan-num">03</div>
+          <h3>Financial Freedom</h3>
+          <p>Pay one affordable amount every month until your debts are cleared and you're free.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Band -->
+    <section class="cta-band">
+      <h2>Ready to take back control?</h2>
+      <p>Speak to a qualified debt counsellor today — free, confidential, no obligation.</p>
+      <a href="contact.html" class="cta-btn">
+        <i data-lucide="phone"></i> Get My Free Assessment
+      </a>
+    </section>
+  </div>
+
+  <!-- WhatsApp Float -->
+  <a href="#" id="whatsapp-float" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+    <i data-lucide="message-circle"></i>
+  </a>
+
+  <script>
+    lucide.createIcons();
+    
+    // WhatsApp link
+    const waNum = "27636183762";
+    const waUrl = `https://wa.me/${waNum}?text=Hi%20Remedy%20Debt%20Solutions%2C%20I%20need%20help%20with%20my%20debt.`;
+    document.getElementById('header-cta').href = waUrl;
+    document.getElementById('whatsapp-float').href = waUrl;
+  </script>
+</body>
+</html>
