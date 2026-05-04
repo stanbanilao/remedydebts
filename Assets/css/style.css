@@ -249,12 +249,7 @@ nav {
     opacity: 0.9;
 }
 
-.submit-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-/* Section general */
+/* Sections */
 section.content {
     padding: 90px 20px;
     max-width: 1200px;
@@ -290,7 +285,6 @@ section.content {
     margin: 0 auto 4rem;
 }
 
-/* Plan, Why, Reviews, CTA, Footer styles... (full styles included) */
 .plan-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -303,7 +297,6 @@ section.content {
     border-radius: 20px;
     border: 1px solid rgba(15,27,51,0.06);
     transition: transform 0.3s, box-shadow 0.3s;
-    position: relative;
 }
 
 .plan-card:hover {
@@ -325,7 +318,6 @@ section.content {
     background: #1a2740;
     color: #fff;
     padding: 90px 20px;
-    margin: 0;
     width: 100%;
 }
 
@@ -380,7 +372,6 @@ section.content {
     background: #c8943a;
     padding: 70px 20px;
     text-align: center;
-    margin: 0;
     width: 100%;
 }
 
