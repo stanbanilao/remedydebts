@@ -1,1 +1,70 @@
+/* Assets/css/style.css */
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
 
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.logo {
+  font-family: 'Special Elite', cursive;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.blue { color: #1e40af; }
+.accent { color: #f59e0b; }
+
+.cta-btn {
+  background: linear-gradient(135deg, #1e40af, #3b82f6);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgb(30 64 175 / 0.3);
+}
+
+.hero {
+  background: linear-gradient(rgba(30,64,175,0.9), rgba(30,64,175,0.85)), url('https://picsum.photos/id/1015/2000/1200') center/cover;
+  color: white;
+  min-height: 100vh;
+  display: grid;
+  align-items: center;
+}
+
+.plan-card {
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s;
+}
+
+.plan-card:hover {
+  border-color: #1e40af;
+  transform: translateY(-8px);
+}
+
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25D366;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
