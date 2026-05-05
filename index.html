@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Remedy Debt Solutions | Debt Counselling South Africa</title>
-    <meta name="description" content="NCR Registered Debt Counsellors. Professional debt review & counselling. Regain financial freedom.">
+    <meta name="description" content="NCR Registered Debt Counsellors helping South Africans escape debt. One affordable payment. Stop harassment. Regain control.">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+    <!-- Header -->
     <header>
         <div class="logo">
             <a href="index.html"><img src="images/Remedy Debt Solutions Logo.png" alt="Remedy Debt Solutions" class="main-logo"></a>
@@ -23,18 +24,72 @@
         <a href="https://wa.me/27821234567" class="cta-btn" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
     </header>
 
+    <!-- Hero -->
     <section class="hero">
         <div class="hero-content">
             <h1>NCR Registered Debt Counsellors</h1>
             <p class="tagline">Because debt has a remedy.</p>
-            <p>Stop creditor calls. One affordable monthly payment.<br>100% confidential • Professional • Trusted</p>
+            <p>Stop creditor calls • One affordable monthly payment • Protect your assets • 100% confidential</p>
             <a href="contact.html" class="cta-btn big-btn">Start Your Free Assessment →</a>
         </div>
     </section>
 
+    <!-- Trust Bar -->
+    <div class="trust-bar">
+        <div><strong>NCR Registered</strong></div>
+        <div><strong>1500+</strong> Clients Helped</div>
+        <div><strong>60%</strong> Average Debt Reduction</div>
+        <div><strong>4.9/5</strong> Client Rating</div>
+    </div>
+
+    <!-- Why Choose Us -->
+    <section class="section">
+        <h2>Why Choose Remedy Debt Solutions?</h2>
+        <div class="cards">
+            <div class="card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Legal Protection</h3>
+                <p>Immediate protection from creditors, legal action &amp; blacklisting.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-hand-holding-dollar"></i>
+                <h3>One Affordable Payment</h3>
+                <p>Reduce your monthly repayments by up to 60%.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-lock"></i>
+                <h3>100% Confidential</h3>
+                <p>Expert advice with complete privacy.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section bg-light">
+        <h2>How Debt Review Works</h2>
+        <div class="steps">
+            <div class="step"><span>1</span> Free Assessment</div>
+            <div class="step"><span>2</span> We Negotiate With Creditors</div>
+            <div class="step"><span>3</span> One Consolidated Payment</div>
+            <div class="step"><span>4</span> Regain Financial Freedom</div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-final">
+        <h2>Ready to Take Back Control?</h2>
+        <p>Speak to a qualified debt counsellor today — free, confidential, no obligation.</p>
+        <a href="contact.html" class="cta-btn big-btn">Get My Free Assessment</a>
+    </section>
+
+    <!-- Floating WhatsApp -->
     <a href="https://wa.me/27821234567" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollreveal/4.0.9/scrollreveal.min.js"></script>
-    <script> ScrollReveal().reveal('.hero-content > *', { delay: 100, distance: '50px', origin: 'bottom' }); </script>
+    <script>
+        ScrollReveal().reveal('.hero-content > *, .card, .step', {
+            delay: 150, distance: '60px', origin: 'bottom', interval: 200
+        });
+    </script>
 </body>
 </html>
