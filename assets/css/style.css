@@ -1,54 +1,20 @@
-/* ===================================
-   REMEDY DEBT SOLUTIONS - MAIN CSS
-   =================================== */
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 
-:root {
-    --primary-color: #0066cc;
-    --secondary-color: #00cc99;
-    --accent-color: #ff6b35;
-    --dark-bg: #1a1a2e;
-    --light-bg: #f5f7fa;
-    --white: #ffffff;
-    --dark-text: #2d3436;
-    --light-text: #636e72;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.15);
+* { margin:0; padding:0; box-sizing:border-box; }
+body { 
+    font-family: 'Inter', sans-serif; 
+    line-height:1.6; 
+    color:#333; 
 }
 
-/* ===================================
-   RESET & GLOBAL STYLES
-   =================================== */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    color: var(--dark-text);
-    background-color: var(--white);
-    line-height: 1.6;
-}
-
-/* ===================================
-   HEADER & NAVIGATION
-   =================================== */
-
+/* Header */
 header {
+    background: white;
+    padding: 1rem 5%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 1.2rem 3rem;
-    background: var(--white);
-    box-shadow: var(--shadow);
+    justify-content: space-between;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -61,261 +27,192 @@ header {
     align-items: center;
 }
 
-.logo a {
-    text-decoration: none;
-}
-
-.logo img {
-    height: 70px;
-    width: auto;
-    transition: all 0.3s ease;
-}
-
-.logo img:hover {
-    transform: scale(1.05);
-}
+.main-logo { height: 80px; width:auto; transition: all 0.4s; }
+.main-logo:hover { transform: scale(1.08); }
 
 .nav-links {
     display: flex;
-    gap: 2.5rem;
-    align-items: center;
+    gap: 2rem;
     flex-wrap: wrap;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: var(--dark-text);
+    color: #1e40af;
     font-weight: 600;
     font-size: 0.95rem;
     transition: all 0.3s ease;
-    padding: 0.5rem 0;
+    padding-bottom: 0.3rem;
     border-bottom: 2px solid transparent;
 }
 
 .nav-links a:hover {
-    color: var(--primary-color);
-    border-bottom: 2px solid var(--primary-color);
+    color: #0066cc;
+    border-bottom: 2px solid #00cc99;
 }
 
-.cta-btn {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: var(--white);
-    padding: 0.85rem 1.8rem;
-    border-radius: 25px;
+.header-cta {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.callback-btn {
+    background: linear-gradient(135deg, #ff6b35, #ff8c42);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
     text-decoration: none;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    transition: all 0.3s ease;
+    transition: all 0.4s;
+    font-size: 0.9rem;
+}
+
+.callback-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+}
+
+.cta-btn {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.4s;
     border: none;
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
-.cta-btn:hover {
+.cta-btn:hover { 
     transform: translateY(-3px);
-    box-shadow: var(--shadow-hover);
+    box-shadow: 0 10px 30px rgba(30, 64, 175, 0.3);
 }
 
-.cta-btn i {
-    font-size: 1.1rem;
-}
-
-/* ===================================
-   HERO SECTION
-   =================================== */
-
+/* Hero */
 .hero {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: var(--white);
-    padding: 5rem 2rem;
-    text-align: center;
-    min-height: 70vh;
+    background: linear-gradient(rgba(30,64,175,0.9), rgba(30,64,175,0.85)), url('https://picsum.photos/id/1015/2000/1200') center/cover;
+    color: white;
+    min-height: 90vh;
     display: flex;
     align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.hero::before {
-    content: '';
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    background: 
-        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-    animation: float 6s ease-in-out infinite;
-    z-index: 1;
-}
-
-@keyframes float {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(20px, -20px); }
+    text-align: center;
+    padding: 0 5%;
 }
 
 .hero-content {
-    position: relative;
-    z-index: 2;
     max-width: 800px;
+    margin: 0 auto;
 }
 
-.hero-content h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    line-height: 1.2;
-    font-weight: 700;
+.hero h1 { 
+    font-size: 3.2rem; 
     font-family: 'Playfair Display', serif;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
 }
 
-.hero-content .tagline {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    opacity: 0.95;
+.tagline { 
+    font-size: 1.8rem; 
+    margin: 20px 0;
     font-weight: 500;
 }
 
 .hero-content p {
     font-size: 1.1rem;
     margin-bottom: 2rem;
-    opacity: 0.9;
-    line-height: 1.8;
+    opacity: 0.95;
 }
 
 .big-btn {
     font-size: 1.1rem;
-    padding: 1rem 2.5rem;
-    display: inline-block;
+    padding: 14px 32px !important;
 }
 
-/* ===================================
-   TRUST BAR
-   =================================== */
-
-.trust-bar {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    background: var(--light-bg);
-    padding: 2.5rem 2rem;
-    text-align: center;
-    gap: 2rem;
-    border-bottom: 4px solid var(--secondary-color);
-}
-
-.trust-bar div {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--primary-color);
-}
-
-/* ===================================
-   MAIN SECTIONS
-   =================================== */
-
+/* Sections */
 .section {
-    padding: 4rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.section.bg-light {
-    background: var(--light-bg);
+    padding: 80px 5%;
+    text-align: center;
 }
 
 .section h2 {
     font-size: 2.2rem;
-    color: var(--dark-text);
+    color: #1e40af;
     margin-bottom: 3rem;
-    text-align: center;
-    position: relative;
-    padding-bottom: 1rem;
     font-weight: 700;
 }
 
-.section h2::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    border-radius: 2px;
-}
-
-/* ===================================
-   CARDS LAYOUT
-   =================================== */
+.bg-light { background: #f8fafc; }
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
 }
 
 .card {
-    background: var(--white);
-    padding: 2.5rem;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    transition: all 0.3s ease;
-    border-top: 4px solid var(--secondary-color);
+    background: white;
+    padding: 40px 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.4s;
+    border-top: 4px solid #00cc99;
 }
 
 .card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-hover);
+    transform: translateY(-15px);
+    box-shadow: 0 20px 40px rgba(30,64,175,0.15);
 }
 
 .card i {
-    font-size: 2.5rem;
-    color: var(--secondary-color);
-    margin-bottom: 1.5rem;
+    font-size: 3rem;
+    color: #1e40af;
+    margin-bottom: 20px;
 }
 
 .card h3 {
-    font-size: 1.3rem;
-    color: var(--dark-text);
+    color: #1e40af;
     margin-bottom: 1rem;
     font-weight: 600;
 }
 
 .card p {
-    color: var(--light-text);
+    color: #636e72;
     font-size: 0.95rem;
-    line-height: 1.6;
 }
 
-/* ===================================
-   STEPS SECTION
-   =================================== */
-
+/* Steps */
 .steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 40px;
 }
 
 .step {
-    background: var(--white);
-    border: 2px solid var(--primary-color);
+    background: white;
+    padding: 25px 30px;
     border-radius: 12px;
-    padding: 2rem 1.5rem;
-    text-align: center;
-    position: relative;
-    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    min-width: 220px;
+    border: 2px solid #1e40af;
     font-weight: 600;
+    transition: all 0.3s ease;
 }
 
 .step:hover {
-    background: var(--primary-color);
-    color: var(--white);
+    background: #1e40af;
+    color: white;
     transform: translateY(-5px);
 }
 
@@ -323,8 +220,8 @@ header {
     display: inline-block;
     width: 50px;
     height: 50px;
-    background: var(--secondary-color);
-    color: var(--white);
+    background: #00cc99;
+    color: white;
     border-radius: 50%;
     font-size: 1.5rem;
     font-weight: 700;
@@ -333,99 +230,81 @@ header {
 }
 
 .step:hover span {
-    background: var(--accent-color);
+    background: #ff6b35;
 }
 
-.step::after {
-    content: '→';
-    position: absolute;
-    right: -2.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.5rem;
-    color: var(--secondary-color);
-}
-
-.step:last-child::after {
-    display: none;
-}
-
-/* ===================================
-   CTA FINAL SECTION
-   =================================== */
-
-.cta-final {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: var(--white);
-    padding: 4rem 2rem;
+/* Trust Bar */
+.trust-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    background: #f8fafc;
+    padding: 2rem;
     text-align: center;
-    border-radius: 12px;
-    margin: 3rem auto;
-    max-width: 1200px;
-    width: 90%;
+    gap: 2rem;
+    border-bottom: 3px solid #00cc99;
+}
+
+.trust-bar div {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e40af;
+}
+
+/* Final CTA */
+.cta-final {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    color: white;
+    padding: 100px 5%;
+    text-align: center;
 }
 
 .cta-final h2 {
-    color: var(--white);
-    margin-bottom: 2rem;
     font-size: 2rem;
+    margin-bottom: 2rem;
     font-weight: 700;
 }
 
-.cta-final h2::after {
-    background: var(--accent-color);
-}
-
-/* ===================================
-   FOOTER
-   =================================== */
-
+/* Footer */
 footer {
-    background: var(--dark-bg);
-    color: var(--white);
-    padding: 2.5rem;
+    background: #0f172a;
+    color: #cbd5e1;
     text-align: center;
+    padding: 40px 5%;
 }
 
 .footer-content p {
     margin: 0.5rem 0;
-    font-size: 0.95rem;
 }
 
 .footer-content a {
-    color: var(--secondary-color);
+    color: #60a5fa;
     text-decoration: none;
-    transition: color 0.3s ease;
     font-weight: 600;
+    transition: color 0.3s ease;
 }
 
 .footer-content a:hover {
-    color: var(--accent-color);
+    color: #93c5fd;
 }
 
-/* ===================================
-   WHATSAPP FLOATING BUTTON
-   =================================== */
-
+/* WhatsApp Floating Button */
 .whatsapp-float {
     position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #25D366;
+    color: white;
     width: 65px;
     height: 65px;
-    bottom: 20px;
-    right: 20px;
-    background: #25d366;
-    color: var(--white);
     border-radius: 50%;
-    text-align: center;
-    font-size: 2rem;
-    line-height: 65px;
-    z-index: 999;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-hover);
-    text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 32px;
+    box-shadow: 0 10px 30px rgba(37,211,102,0.5);
+    z-index: 2000;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
 .whatsapp-float:hover {
@@ -433,33 +312,18 @@ footer {
     transform: scale(1.1);
 }
 
-/* ===================================
-   RESPONSIVE DESIGN
-   =================================== */
-
+/* Responsive */
 @media (max-width: 1024px) {
     header {
-        padding: 1rem 2rem;
+        padding: 1rem 3%;
     }
 
-    .nav-links {
-        gap: 1.5rem;
+    .hero h1 { 
+        font-size: 2.5rem; 
     }
 
-    .hero-content h1 {
-        font-size: 2.2rem;
-    }
-
-    .hero-content .tagline {
-        font-size: 1.2rem;
-    }
-
-    .section {
-        padding: 3rem 1.5rem;
-    }
-
-    .section h2 {
-        font-size: 1.8rem;
+    .tagline {
+        font-size: 1.4rem;
     }
 }
 
@@ -467,11 +331,19 @@ footer {
     header {
         flex-direction: column;
         gap: 1rem;
-        padding: 1rem;
+        padding: 0.8rem 3%;
     }
 
-    .logo img {
-        height: 50px;
+    .hero h1 { 
+        font-size: 2.2rem; 
+    }
+
+    .tagline {
+        font-size: 1.2rem;
+    }
+
+    .hero-content p {
+        font-size: 0.95rem;
     }
 
     .nav-links {
@@ -480,35 +352,40 @@ footer {
         justify-content: center;
     }
 
-    .nav-links a {
-        padding: 0.3rem 0;
+    .header-cta {
+        gap: 0.8rem;
+        justify-content: center;
     }
 
+    .callback-btn,
     .cta-btn {
-        padding: 0.6rem 1.2rem;
-        font-size: 0.85rem;
+        padding: 8px 16px !important;
+        font-size: 0.8rem;
     }
 
-    .hero {
-        padding: 3rem 1.5rem;
-        min-height: 55vh;
+    .section {
+        padding: 50px 3%;
     }
 
-    .hero-content h1 {
+    .section h2 {
         font-size: 1.8rem;
     }
 
-    .hero-content .tagline {
-        font-size: 1rem;
+    .cards {
+        gap: 20px;
     }
 
-    .hero-content p {
-        font-size: 0.95rem;
+    .card {
+        padding: 25px 15px;
+    }
+
+    .card i {
+        font-size: 2.5rem;
     }
 
     .trust-bar {
         grid-template-columns: repeat(2, 1fr);
-        padding: 1.5rem 1rem;
+        padding: 1.5rem;
         gap: 1rem;
     }
 
@@ -516,89 +393,50 @@ footer {
         font-size: 0.9rem;
     }
 
-    .section {
-        padding: 2rem 1rem;
-    }
-
-    .section h2 {
-        font-size: 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .cards {
-        gap: 1.5rem;
-    }
-
-    .card {
-        padding: 1.5rem;
-    }
-
-    .card i {
-        font-size: 2rem;
-    }
-
-    .card h3 {
-        font-size: 1.1rem;
-    }
-
     .steps {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 15px;
     }
 
-    .step::after {
-        display: none;
+    .step {
+        min-width: 180px;
+        padding: 20px 20px;
     }
 
     .cta-final {
-        width: 95%;
-        padding: 2.5rem 1.5rem;
-        margin: 2rem auto;
+        padding: 50px 3%;
     }
 
     .cta-final h2 {
         font-size: 1.5rem;
     }
 
-    .big-btn {
-        font-size: 1rem;
-        padding: 0.85rem 2rem;
-    }
-
     .whatsapp-float {
         width: 55px;
         height: 55px;
-        font-size: 1.5rem;
-        line-height: 55px;
-        bottom: 15px;
-        right: 15px;
+        font-size: 28px;
+        bottom: 20px;
+        right: 20px;
     }
 }
 
 @media (max-width: 480px) {
     header {
         gap: 0.8rem;
-        padding: 0.8rem;
+        padding: 0.6rem 2%;
     }
 
-    .nav-links {
-        gap: 0.8rem;
-        font-size: 0.75rem;
+    .hero {
+        padding: 0 2%;
+        min-height: 70vh;
     }
 
-    .cta-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.75rem;
+    .hero h1 { 
+        font-size: 1.6rem; 
     }
 
-    .hero-content h1 {
-        font-size: 1.4rem;
-        margin-bottom: 0.8rem;
-    }
-
-    .hero-content .tagline {
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
+    .tagline {
+        font-size: 1rem;
+        margin: 15px 0;
     }
 
     .hero-content p {
@@ -606,62 +444,41 @@ footer {
         margin-bottom: 1.5rem;
     }
 
-    .trust-bar {
-        grid-template-columns: 1fr;
-        padding: 1rem;
+    .nav-links {
+        display: none;
     }
 
-    .trust-bar div {
-        font-size: 0.8rem;
+    .section {
+        padding: 40px 2%;
     }
 
     .section h2 {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
     }
 
     .card {
-        padding: 1.2rem;
+        padding: 20px 15px;
     }
 
     .card i {
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
 
-    .card h3 {
-        font-size: 1rem;
+    .step {
+        min-width: 140px;
+        padding: 15px 15px;
+        font-size: 0.85rem;
     }
 
-    .big-btn {
-        font-size: 0.9rem;
-        padding: 0.75rem 1.5rem;
+    .callback-btn,
+    .cta-btn {
+        padding: 6px 12px !important;
+        font-size: 0.7rem;
     }
-}
 
-/* ===================================
-   ACCESSIBILITY
-   =================================== */
-
-a:focus,
-button:focus {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 2px;
-}
-
-/* ===================================
-   ANIMATIONS
-   =================================== */
-
-@keyframes slideInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.card {
-    animation: slideInUp 0.6s ease-out;
 }
