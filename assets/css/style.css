@@ -149,3 +149,24 @@ footer {
     .hero h1 { font-size: 2.4rem; }
     header { flex-direction: column; gap: 15px; }
 }
+/* Logo Fix */
+.logo {
+    display: flex;
+    align-items: center;
+}
+.main-logo {
+    height: 85px;
+    width: auto;
+    max-width: 300px;
+}
+
+/* Hero Background Fix */
+.hero {
+    background: linear-gradient(rgba(30,64,175,0.9), rgba(30,64,175,0.85)), url('https://picsum.photos/id/1015/2000/1200') center/cover no-repeat;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
