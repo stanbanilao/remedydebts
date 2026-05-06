@@ -1,94 +1,48 @@
-<!doctype html>
-<html lang="en" class="h-full">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Why Us - Remedy Debt Solutions</title>
-  <meta name="description" content="Why choose Remedy Debt Solutions for debt counselling in South Africa.">
-  
-  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  
-  <link rel="stylesheet" href="assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Us | Remedy Debt Solutions</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body class="h-full">
-  <div class="page-wrapper">
-    <!-- HEADER -->
+<body>
     <header>
-      <nav>
         <div class="logo">
-          <span class="blue">Remedy</span> 
-          <span class="accent">Debt</span> 
-          <span class="blue">Solutions</span>
+            <a href="index.html"><img src="images/Remedy Debt Solutions Logo.png" alt="Remedy Debt Solutions" class="main-logo"></a>
         </div>
-        <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="plan.html">The Plan</a></li>
-          <li><a href="why.html">Why Us</a></li>
-          <li><a href="reviews.html">Reviews</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-        <a href="#" id="header-cta" class="cta-btn" target="_blank" rel="noopener noreferrer">
-          <i data-lucide="message-circle"></i> 
-          <span>WhatsApp Us</span>
-        </a>
-      </nav>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="plan.html">The Plan</a>
+            <a href="why.html">Why Us</a>
+            <a href="reviews.html">Reviews</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <a href="https://wa.me/27821234567" class="cta-btn" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
     </header>
 
-    <!-- WHY US SECTION -->
-    <section class="why-section">
-      <div class="why-inner">
-        <div class="section-header">
-          <span class="eyebrow">Why choose us</span>
-          <h2 class="section-title">Debt has a <em>remedy</em>.</h2>
+    <section class="hero" style="min-height: 60vh;">
+        <div class="hero-content">
+            <h1>Why Choose Remedy Debt Solutions?</h1>
+            <p class="tagline">Because debt has a remedy.</p>
         </div>
-        
-        <div class="why-grid">
-          <div class="why-card">
-            <div class="why-icon"><i data-lucide="shield-check"></i></div>
-            <p>NCR Registered &amp; fully compliant with SA law</p>
-          </div>
-          
-          <div class="why-card">
-            <div class="why-icon"><i data-lucide="trending-down"></i></div>
-            <p>Reduce monthly repayments by up to 60%</p>
-          </div>
-          
-          <div class="why-card">
-            <div class="why-icon"><i data-lucide="home"></i></div>
-            <p>Protect your home, car and assets from creditors</p>
-          </div>
-          
-          <div class="why-card">
-            <div class="why-icon"><i data-lucide="heart-handshake"></i></div>
-            <p>Free, confidential expert advice — no upfront fees</p>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <!-- CTA Band -->
-    <section class="cta-band">
-      <h2>Ready to take back control?</h2>
-      <p>Speak to a qualified debt counsellor today — free, confidential, no obligation.</p>
-      <a href="contact.html" class="cta-btn">
-        <i data-lucide="phone"></i> Get My Free Assessment
-      </a>
+    <section class="section">
+        <div class="cards">
+            <div class="card"><i class="fas fa-shield-alt"></i><h3>Full Legal Protection</h3><p>Creditors must stop calling and legal action immediately.</p></div>
+            <div class="card"><i class="fas fa-percentage"></i><h3>Up to 60% Lower Payments</h3><p>Consolidate all debts into one affordable monthly instalment.</p></div>
+            <div class="card"><i class="fas fa-home"></i><h3>Protect Your Assets</h3><p>Safeguard your home, car, and savings from repossession.</p></div>
+            <div class="card"><i class="fas fa-user-shield"></i><h3>NCR Registered & Compliant</h3><p>Fully licensed debt counsellors following South African law.</p></div>
+        </div>
     </section>
-  </div>
 
-  <!-- WhatsApp Float -->
-  <a href="#" id="whatsapp-float" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
-    <i data-lucide="message-circle"></i>
-  </a>
+    <section class="cta-final">
+        <h2>Ready to Escape Debt Stress?</h2>
+        <a href="contact.html" class="cta-btn big-btn">Get Your Free Assessment</a>
+    </section>
 
-  <script>
-    lucide.createIcons();
-    
-    const waNum = "27636183762";
-    const waUrl = `https://wa.me/${waNum}?text=Hi%20Remedy%20Debt%20Solutions%2C%20I%20need%20help%20with%20my%20debt.`;
-    document.getElementById('header-cta').href = waUrl;
-    document.getElementById('whatsapp-float').href = waUrl;
-  </script>
+    <a href="https://wa.me/27821234567" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 </body>
 </html>
