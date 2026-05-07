@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Calculator | Remedy Debt Solutions</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .calculator {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 50px 25px;
+            background: #1B9C85;
+            border-radius: 20px;
+            color: white;
+        }
+        .input-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+        }
+        .new-value {
+            background: #166534;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            min-width: 220px;
+            text-align: center;
+        }
+        .result-panel {
+            background: #134e4a;
+            padding: 30px;
+            border-radius: 18px;
+        }
+        .big-number {
+            font-size: 2.8rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html"><img src="images/Remedy Debt Solutions Logo.png" alt="Remedy Debt Solutions" class="main-logo"></a>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="plan.html">The Plan</a>
+            <a href="why.html">Why Us</a>
+            <a href="reviews.html">Reviews</a>
+            <a href="contact.html">Contact</a>
+            <a href="calculator.html">Savings Calculator</a>
+        </nav>
+        <a href="https://wa.me/27636183762" class="cta-btn" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+    </header>
+
+    <div class="calculator">
+        <div style="display: flex; gap: 40px; flex-wrap: wrap;">
+            <!-- LEFT SIDE -->
+            <div style="flex: 1; min-width: 500px;">
+                <h2 style="font-size: 36px; margin-bottom: 10px;">How much can you save?</h2>
+                <p style="color: #e0f2fe; margin-bottom: 30px;">Budget calculator uses data from the last 5 years average from our database.</p>
+                
+                <div class="input-grid">
+                    <div class="row">
+                        <div style="flex:1;"><div style="font-weight:600;">Home Loan</div><input id="home" type="number" placeholder="R"></div>
+                        <div><div style="font-size:13px;">New Home Loan</div><div id="new-home" class="new-value">R 0</div></div>
+                    </div>
+                    <div class="row">
+                        <div style="flex:1;"><div style="font-weight:600;">Vehicle Finance</div><input id="vehicle" type="number" placeholder="R"></div>
+                        <div><div style="font-size:13px;">New Vehicle Finance</div><div id="new-vehicle" class="new-value">R 0</div></div>
+                    </div>
+                    <div class="row">
+                        <div style="flex:1;"><div style="font-weight:600;">Credit Card</div><input id="credit" type="number" placeholder="R"></div>
+                        <div><div style="font-size:13px;">New Credit Card</div><div id="new-credit" class="new-value">R 0</div></div>
+                    </div>
+                    <div class="row">
+                        <div style="flex:1;"><div style="font-weight:600;">Other</div><input id="other" type="number" placeholder="R"></div>
+                        <div><div style="font-size:13px;">New Other</div><div id="new-other" class="new-value">R 0</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div style="width: 340px;">
+                <div class="result-panel">
+                    <h3 style="text-align:center; margin-bottom:20px;">Potential Saving Scenario</h3>
+                    <div style="display:flex; justify-content:space-between; margin:15px 0;">
+                        <div>Total Payments<br><span id="total" class="big-number">R 0</span></div>
+                        <div style="text-align:right;">Negotiated New Payments<br><span id="new-total" class="big-number" style="color:#4ade80;">R 0</span></div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin:15px 0;">
+                        <div>Percentage Decrease<br><span id="percent" class="big-number">0%</span></div>
+                        <div style="text-align:right;">Monthly Savings<br><span id="savings" class="big-number" style="color:#4ade80;">R 0</span></div>
+                    </div>
+                    <a href="https://wa.me/27636183762" target="_blank" class="cta-btn" style="display:block; text-align:center; margin-top:20px; background:#166534;">
+                        LET'S GET STARTED →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 Remedy Debt Solutions. All Rights Reserved.</p>
+            <p>Powered &amp; Designed by <a href="https://www.thynkverse.co.za" target="_blank">Thynkverse</a></p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/27636183762" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+    <script>
+        function calculateSavings() {
+            let home = parseFloat(document.getElementById('home').value) || 0;
+            let vehicle = parseFloat(document.getElementById('vehicle').value) || 0;
+            let credit = parseFloat(document.getElementById('credit').value) || 0;
+            let other = parseFloat(document.getElementById('other').value) || 0;
+
+            let total = home + vehicle + credit + other;
+
+            let newHome = Math.round(home * 0.75);
+            let newVehicle = Math.round(vehicle * 0.72);
+            let newCredit = Math.round(credit * 0.30);
+            let newOther = Math.round(other * 0.50);
+            let newTotal = newHome + newVehicle + newCredit + newOther;
+
+            let savings = total - newTotal;
+            let percent = total > 0 ? Math.round((savings / total) * 100) : 0;
+
+            document.getElementById('new-home').textContent = 'R ' + newHome.toLocaleString();
+            document.getElementById('new-vehicle').textContent = 'R ' + newVehicle.toLocaleString();
+            document.getElementById('new-credit').textContent = 'R ' + newCredit.toLocaleString();
+            document.getElementById('new-other').textContent = 'R ' + newOther.toLocaleString();
+            document.getElementById('total').textContent = 'R ' + total.toLocaleString();
+            document.getElementById('new-total').textContent = 'R ' + newTotal.toLocaleString();
+            document.getElementById('savings').textContent = 'R ' + savings.toLocaleString();
+            document.getElementById('percent').textContent = percent + '%';
+        }
+
+        // Run on input
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', calculateSavings);
+        });
+    </script>
+</body>
+</html>
