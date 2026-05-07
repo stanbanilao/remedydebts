@@ -482,3 +482,44 @@ footer {
         font-size: 24px;
     }
 }
+/* Contact Info Section */
+.contact-info {
+    background: #f8fafc;
+    padding: 60px 5%;
+    text-align: center;
+    border-top: 1px solid #e2e8f0;
+}
+
+.contact-info h3 {
+    color: #1e40af;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+}
+
+.contact-info p {
+    font-size: 1.1rem;
+    margin: 12px 0;
+    color: #334155;
+}
+
+.contact-info i {
+    color: #1e40af;
+    margin-right: 12px;
+    width: 24px;
+}
+
+.contact-info a {
+    color: #1e40af;
+    text-decoration: none;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+/* Make it look better on mobile */
+@media (max-width: 768px) {
+    .contact-info {
+        padding: 40px 5%;
+    }
+}
