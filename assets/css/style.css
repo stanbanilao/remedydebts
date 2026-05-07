@@ -482,24 +482,33 @@ footer {
         font-size: 24px;
     }
 }
-/* Contact Info Section */
+/* Contact Info - Two Column Layout */
 .contact-info {
     background: #f8fafc;
     padding: 60px 5%;
-    text-align: center;
     border-top: 1px solid #e2e8f0;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.contact-left, .contact-right {
+    text-align: left;
 }
 
 .contact-info h3 {
     color: #1e40af;
-    margin-bottom: 25px;
-    font-size: 1.8rem;
+    margin-bottom: 20px;
 }
 
 .contact-info p {
-    font-size: 1.1rem;
     margin: 12px 0;
-    color: #334155;
+    font-size: 1.05rem;
 }
 
 .contact-info i {
@@ -517,9 +526,10 @@ footer {
     text-decoration: underline;
 }
 
-/* Make it look better on mobile */
+/* Mobile */
 @media (max-width: 768px) {
-    .contact-info {
-        padding: 40px 5%;
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
     }
 }
