@@ -568,3 +568,37 @@ footer {
     margin: 12px 0;
     color: #1e40af;
 }
+/* Remedy Debt Process Cards */
+.process-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.process-card {
+    background: white;
+    padding: 35px 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: all 0.4s ease;
+}
+
+.process-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(30,64,175,0.15);
+}
+
+.process-icon {
+    font-size: 48px;
+    color: #1e40af;
+    margin-bottom: 20px;
+}
+
+.process-card h3 {
+    margin: 15px 0 12px;
+    color: #1e40af;
+    font-size: 1.25rem;
+}
