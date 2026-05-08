@@ -533,3 +533,38 @@ footer {
         gap: 30px;
     }
 }
+/* Remedy Debt Process */
+.process-steps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.step-item {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    text-align: center;
+    width: 220px;
+    transition: all 0.3s;
+}
+
+.step-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(30,64,175,0.15);
+}
+
+.step-icon {
+    font-size: 42px;
+    color: #1e40af;
+    margin-bottom: 15px;
+}
+
+.step-item h3 {
+    margin: 12px 0;
+    color: #1e40af;
+}
