@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RemedyDebts - Client Dashboard</title>
+    <title>RemedyDebts - Secure Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
@@ -14,17 +14,64 @@
         }
         .modal-enter { opacity: 0; transform: scale(0.95); }
         .modal-enter-active { opacity: 1; transform: scale(1); transition: opacity 0.2s ease-out, transform 0.2s ease-out; }
-        input[type="checkbox"] { accent-color: #2563eb; cursor: pointer; }
+        input[type="checkbox"], input[type="radio"] { accent-color: #2563eb; cursor: pointer; }
         th.sortable { cursor: pointer; transition: background-color 0.2s; }
         th.sortable:hover { background-color: #e5e7eb; }
+        
+        /* Custom scrollbar for history dropdown */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
-<body class="text-gray-800 antialiased min-h-screen pb-12">
+<body class="text-gray-800 antialiased min-h-screen flex flex-col items-center">
 
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+    <div id="global-loader" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center">
+        <i class="ph ph-spinner-gap animate-spin text-5xl text-blue-600 mb-4"></i>
+        <p class="text-gray-500 font-medium tracking-wide">Connecting to Secure Server...</p>
+    </div>
 
-        <header class="flex justify-between items-start mb-8">
-            <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+    <div id="login-screen" class="hidden w-full max-w-md mt-20 px-4">
+        <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 text-center">
+            <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="ph ph-lock-key text-4xl text-blue-600"></i>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-900 mb-1">RemedyDebts Portal</h1>
+            <p class="text-sm text-gray-500 mb-8">Please sign in to access client data.</p>
+            
+            <form id="login-form" class="space-y-5 text-left">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
+                    <div class="relative">
+                        <i class="ph ph-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                        <input type="email" id="login-email" required class="w-full pl-10 pr-4 py-2.5 bg-gray-50 rounded-lg border border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all text-gray-800">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+                    <div class="relative">
+                        <i class="ph ph-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                        <input type="password" id="login-password" required class="w-full pl-10 pr-4 py-2.5 bg-gray-50 rounded-lg border border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all text-gray-800">
+                    </div>
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 mt-2">
+                    Sign In <i class="ph ph-arrow-right font-bold"></i>
+                </button>
+                
+                <div class="text-center mt-3">
+                    <button type="button" id="forgot-password-btn" class="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors">Forgot Password?</button>
+                </div>
+                
+                <p id="login-error" class="text-sm text-center hidden mt-3"></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-container" class="hidden w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+
+        <header class="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
+            <div class="flex flex-col items-center md:items-start text-center md:text-left">
                 <div class="relative group mb-3">
                     <input type="file" id="logo-upload" class="hidden" accept="image/*">
                     <label for="logo-upload" id="logo-label" class="cursor-pointer flex items-center justify-center w-24 h-24 rounded-full bg-white shadow-sm border-2 border-dashed border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-all overflow-hidden relative group">
@@ -39,22 +86,33 @@
                 <p class="text-sm font-medium text-gray-500 mt-1">Debt Counselor Portal</p>
             </div>
             
-            <div class="bg-white px-6 py-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center min-w-[180px]">
-                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Today's Date</span>
-                <div class="flex items-center gap-2 text-gray-800">
-                    <i class="ph ph-calendar-blank text-xl text-blue-600"></i>
-                    <span id="current-date" class="font-bold text-lg"></span>
+            <div class="flex flex-col items-end gap-3 w-full md:w-auto">
+                <div class="flex items-center gap-3">
+                    <span class="text-sm font-medium text-gray-700 bg-white px-3 py-1.5 rounded-lg border border-gray-200 shadow-sm flex items-center gap-2">
+                        <i class="ph ph-user-circle text-blue-600 text-lg"></i> User ID: <span id="user-email-display" class="font-bold"></span>
+                    </span>
+                    <button id="logout-btn" class="text-sm font-medium text-gray-500 hover:text-red-600 transition-colors flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg border border-gray-200 shadow-sm">
+                        <i class="ph ph-sign-out"></i> Logout
+                    </button>
+                </div>
+
+                <div class="bg-white px-6 py-3 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center min-w-[180px] w-full md:w-auto">
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Today's Date</span>
+                    <div class="flex items-center gap-2 text-gray-800">
+                        <i class="ph ph-calendar-blank text-lg text-blue-600"></i>
+                        <span id="current-date" class="font-bold"></span>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <div id="loading-spinner" class="flex justify-center items-center py-4 hidden">
-            <i class="ph ph-spinner animate-spin text-3xl text-blue-600"></i>
-            <span class="ml-2 text-blue-600 font-medium">Syncing with cloud database...</span>
+        <div id="data-spinner" class="flex justify-center items-center py-4 hidden">
+            <i class="ph ph-spinner animate-spin text-2xl text-blue-600"></i>
+            <span class="ml-2 text-blue-600 font-medium text-sm">Syncing...</span>
         </div>
 
         <section class="mb-8 relative z-10">
-            <button id="toggle-form-btn" class="w-full py-2 bg-white rounded-xl shadow-sm border border-gray-100 hover:bg-gray-50 hover:border-gray-200 transition-all focus:outline-none flex justify-center items-center group">
+            <button id="toggle-form-btn" class="w-full py-2 bg-white rounded-xl shadow-sm border border-gray-100 hover:bg-gray-50 transition-all focus:outline-none flex justify-center items-center group">
                 <i id="form-toggle-icon" class="ph ph-caret-down text-2xl text-gray-400 group-hover:text-blue-500 transition-transform duration-300"></i>
             </button>
             
@@ -64,16 +122,16 @@
                 </h2>
                 <form id="add-client-form" class="grid grid-cols-1 md:grid-cols-4 gap-5 items-end mb-8">
                     <div>
-                        <label for="id-number" class="block text-sm font-medium text-gray-700 mb-1.5">ID Number</label>
-                        <input type="text" id="id-number" required placeholder="e.g. 8501015009087" class="w-full px-4 py-2.5 bg-gray-50 rounded-lg border border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-800">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">ID Number</label>
+                        <input type="text" id="id-number" required placeholder="e.g. 8501015009087" class="w-full px-4 py-2.5 bg-gray-50 rounded-lg border border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all">
                     </div>
                     <div>
-                        <label for="full-name" class="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
-                        <input type="text" id="full-name" required placeholder="e.g. John Doe" class="w-full px-4 py-2.5 bg-gray-50 rounded-lg border border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-800">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
+                        <input type="text" id="full-name" required placeholder="e.g. John Doe" class="w-full px-4 py-2.5 bg-gray-50 rounded-lg border border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all">
                     </div>
                     <div>
-                        <label for="phone-number" class="block text-sm font-medium text-gray-700 mb-1.5">Phone Number</label>
-                        <input type="tel" id="phone-number" required placeholder="e.g. 082 123 4567" class="w-full px-4 py-2.5 bg-gray-50 rounded-lg border border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-800">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Phone Number</label>
+                        <input type="tel" id="phone-number" required placeholder="e.g. 082 123 4567" class="w-full px-4 py-2.5 bg-gray-50 rounded-lg border border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all">
                     </div>
                     <div>
                         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2">
@@ -87,11 +145,11 @@
                 </h3>
                 <div class="flex items-center gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <div class="flex-grow text-sm text-gray-600">
-                        Upload a standard CSV file. It must contain exactly 3 columns in this order without headers: <br>
+                        Upload a standard CSV file. It must contain exactly 3 columns without headers: <br>
                         <strong>ID Number, Full Name, Phone Number</strong>
                     </div>
                     <input type="file" id="csv-upload" class="hidden" accept=".csv">
-                    <label for="csv-upload" class="cursor-pointer bg-white border border-gray-300 hover:border-blue-500 hover:text-blue-600 text-gray-700 font-medium py-2 px-6 rounded-lg transition-colors shadow-sm flex items-center gap-2 whitespace-nowrap">
+                    <label for="csv-upload" class="cursor-pointer bg-white border border-gray-300 hover:border-blue-500 text-gray-700 font-medium py-2 px-6 rounded-lg transition-colors shadow-sm flex items-center gap-2 whitespace-nowrap">
                         <i class="ph ph-file-csv text-lg"></i> Select CSV
                     </label>
                 </div>
@@ -109,7 +167,7 @@
                 
                 <div class="w-full md:flex-1 max-w-md mx-auto relative">
                     <i class="ph ph-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
-                    <input type="search" id="search-input" placeholder="Search by ID or Phone Number..." class="w-full pl-10 pr-4 py-2 bg-white rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-sm text-gray-800 shadow-sm">
+                    <input type="search" id="search-input" placeholder="Search by ID or Phone Number..." class="w-full pl-10 pr-4 py-2 bg-white rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm text-gray-800 shadow-sm">
                 </div>
 
                 <div class="w-full md:w-auto flex justify-end">
@@ -124,32 +182,29 @@
                     <thead>
                         <tr class="bg-gray-100 text-gray-700 text-sm border-b border-gray-200 select-none">
                             <th class="px-4 py-4 w-[5%] text-center border-r border-gray-200">
-                                <input type="checkbox" id="select-all-checkbox" class="w-4 h-4 text-blue-600 bg-white border-gray-400 rounded focus:ring-blue-500">
+                                <input type="checkbox" id="select-all-checkbox" class="w-4 h-4 rounded border-gray-400">
                             </th>
                             <th class="px-6 py-4 font-semibold w-[15%] sortable" data-sort="idNumber">
                                 <div class="flex items-center justify-between">ID Number <i class="ph ph-arrows-down-up text-gray-400"></i></div>
                             </th>
-                            <th class="px-6 py-4 font-semibold w-[20%] sortable" data-sort="fullName">
+                            <th class="px-6 py-4 font-semibold w-[25%] sortable" data-sort="fullName">
                                 <div class="flex items-center justify-between">Full Name <i class="ph ph-arrows-down-up text-gray-400"></i></div>
                             </th>
-                            <th class="px-6 py-4 font-semibold w-[15%] sortable" data-sort="phoneNumber">
-                                <div class="flex items-center justify-between">Phone Number <i class="ph ph-arrows-down-up text-gray-400"></i></div>
+                            <th class="px-6 py-4 font-semibold w-[25%] sortable" data-sort="phoneNumber">
+                                <div class="flex items-center justify-between">Phone & Comms <i class="ph ph-arrows-down-up text-gray-400"></i></div>
                             </th>
-                            <th class="px-6 py-4 font-semibold w-[12%] text-center sortable" data-sort="adminWork">
+                            <th class="px-6 py-4 font-semibold w-[10%] text-center sortable" data-sort="adminWork">
                                 <div class="flex items-center justify-center gap-2">Admin <i class="ph ph-arrows-down-up text-gray-400"></i></div>
                             </th>
-                            <th class="px-6 py-4 font-semibold w-[18%] text-center sortable" data-sort="legalWork">
+                            <th class="px-6 py-4 font-semibold w-[20%] text-center sortable" data-sort="legalWork">
                                 <div class="flex items-center justify-center gap-2">Legal Work <i class="ph ph-arrows-down-up text-gray-400"></i></div>
-                            </th>
-                            <th class="px-6 py-4 font-semibold w-[15%] text-center sortable" data-sort="status">
-                                <div class="flex items-center justify-center gap-2">Comms <i class="ph ph-arrows-down-up text-gray-400"></i></div>
                             </th>
                         </tr>
                     </thead>
                     <tbody id="client-table-body" class="divide-y divide-gray-100 text-sm">
                         </tbody>
                 </table>
-                <div id="empty-state" class="py-20 text-center text-gray-500">
+                <div id="empty-state" class="py-20 text-center text-gray-500 hidden">
                     <i class="ph ph-folder-open text-5xl mb-4 text-gray-300"></i>
                     <p class="text-base" id="empty-state-text">No clients found.</p>
                 </div>
@@ -161,40 +216,62 @@
     <div id="comm-modal-backdrop" class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-40 hidden flex items-center justify-center">
         <div id="comm-modal" class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden modal-enter">
             <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                <h3 class="text-lg font-semibold text-gray-800">Log Communication</h3>
+                <h3 class="text-lg font-semibold text-gray-800">Log New Communication</h3>
                 <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors">
                     <i class="ph ph-x text-xl"></i>
                 </button>
             </div>
             
             <div class="p-6">
-                <div class="mb-5 p-4 bg-blue-50/50 text-blue-900 rounded-lg border border-blue-100">
-                    <p class="text-sm font-medium mb-1.5">Client: <span id="modal-client-name" class="font-bold text-blue-700"></span></p>
-                    <p class="text-sm font-medium">Phone: <span id="modal-client-phone" class="font-bold text-blue-700"></span></p>
+                <div class="mb-5 p-3 bg-blue-50 text-blue-900 rounded-lg border border-blue-100 flex justify-between items-center">
+                    <div>
+                        <p class="text-xs text-blue-600 font-semibold uppercase tracking-wider mb-0.5">Client</p>
+                        <p id="modal-client-name" class="font-bold text-sm"></p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-blue-600 font-semibold uppercase tracking-wider mb-0.5">Phone</p>
+                        <p id="modal-client-phone" class="font-bold text-sm"></p>
+                    </div>
                 </div>
 
                 <form id="comm-form">
                     <input type="hidden" id="modal-client-id">
                     <div class="space-y-4">
+                        
                         <div>
-                            <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1.5">
-                                <i class="ph ph-chat-circle-text text-green-600 text-lg"></i> SMS Sent Date
-                            </label>
-                            <input type="date" id="sms-date" class="w-full px-4 py-2.5 bg-gray-50 rounded-lg border border-gray-300 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-700">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Message Platform</label>
+                            <div class="flex gap-4 p-1">
+                                <label class="flex items-center gap-2 cursor-pointer group">
+                                    <input type="radio" name="comm-type" value="sms" required class="w-4 h-4 text-blue-600">
+                                    <span class="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition-colors"><i class="ph ph-chat-circle-text text-blue-500 text-lg align-middle"></i> SMS</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer group">
+                                    <input type="radio" name="comm-type" value="wa" required class="w-4 h-4 text-emerald-600">
+                                    <span class="text-sm font-medium text-gray-700 group-hover:text-emerald-600 transition-colors"><i class="ph ph-whatsapp-logo text-emerald-500 text-lg align-middle"></i> WhatsApp</span>
+                                </label>
+                            </div>
                         </div>
+
                         <div>
-                            <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1.5">
-                                <i class="ph ph-whatsapp-logo text-green-500 text-lg"></i> WhatsApp Sent Date
-                            </label>
-                            <input type="date" id="wa-date" class="w-full px-4 py-2.5 bg-gray-50 rounded-lg border border-gray-300 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-700">
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Date Sent</label>
+                            <input type="date" id="comm-date" required class="w-full px-4 py-2.5 bg-gray-50 rounded-lg border border-gray-300 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all text-gray-700">
                         </div>
+
+                        <div>
+                            <div class="flex justify-between items-end mb-1.5">
+                                <label class="block text-sm font-medium text-gray-700">Message Log</label>
+                                <span id="char-count" class="text-xs font-semibold text-gray-400">0/360</span>
+                            </div>
+                            <textarea id="comm-message" required maxlength="360" rows="3" placeholder="Type the message that was sent here..." class="w-full px-4 py-3 bg-gray-50 rounded-lg border border-gray-300 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all text-gray-700 text-sm resize-none"></textarea>
+                        </div>
+
                     </div>
                     <div class="mt-8 flex gap-3">
                         <button type="button" id="cancel-modal-btn" class="w-1/2 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors">
                             Cancel
                         </button>
-                        <button type="submit" class="w-1/2 py-2.5 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2">
-                            <i class="ph ph-check-circle text-lg"></i> Save
+                        <button type="submit" class="w-1/2 py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2">
+                            <i class="ph ph-check-circle text-lg"></i> Save Log
                         </button>
                     </div>
                 </form>
@@ -203,24 +280,22 @@
     </div>
 
     <script type="module">
-        // Import Firebase Functions
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-        // Your specific Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyC0BHiyWmR5Uu7PWmxeCve2vuuIR_XKtOQ",
             authDomain: "remedydebts.firebaseapp.com",
             projectId: "remedydebts",
             storageBucket: "remedydebts.firebasestorage.app",
             messagingSenderId: "578946700287",
-            appId: "1:578946700287:web:de39e8212a0d2178f54dca",
-            measurementId: "G-8PYVR69M51"
+            appId: "1:578946700287:web:de39e8212a0d2178f54dca"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
         const clientsCol = collection(db, "clients");
 
         // --- State Management ---
@@ -231,8 +306,17 @@
         window.isSortDescending = false;
 
         // --- DOM Elements ---
+        const globalLoader = document.getElementById('global-loader');
+        const loginScreen = document.getElementById('login-screen');
+        const appContainer = document.getElementById('app-container');
+        const loginForm = document.getElementById('login-form');
+        const loginError = document.getElementById('login-error');
+        const logoutBtn = document.getElementById('logout-btn');
+        const forgotPwdBtn = document.getElementById('forgot-password-btn');
+        const userEmailDisplay = document.getElementById('user-email-display');
+        
         const currentDateEl = document.getElementById('current-date');
-        const loadingSpinner = document.getElementById('loading-spinner');
+        const dataSpinner = document.getElementById('data-spinner');
         const logoUploadInput = document.getElementById('logo-upload');
         const logoPreview = document.getElementById('logo-preview');
         const cameraIcon = document.getElementById('camera-icon');
@@ -241,14 +325,11 @@
         const toggleFormBtn = document.getElementById('toggle-form-btn');
         const addClientContainer = document.getElementById('add-client-container');
         const formToggleIcon = document.getElementById('form-toggle-icon');
-        
         const addClientForm = document.getElementById('add-client-form');
         const csvUploadInput = document.getElementById('csv-upload');
         const searchInput = document.getElementById('search-input');
-        
         const clientTableBody = document.getElementById('client-table-body');
         const emptyState = document.getElementById('empty-state');
-        const emptyStateText = document.getElementById('empty-state-text');
         const clientCountEl = document.getElementById('client-count');
         const selectAllCheckbox = document.getElementById('select-all-checkbox');
         const deleteSelectedBtn = document.getElementById('delete-selected-btn');
@@ -256,17 +337,69 @@
 
         const modalBackdrop = document.getElementById('comm-modal-backdrop');
         const modal = document.getElementById('comm-modal');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        const cancelModalBtn = document.getElementById('cancel-modal-btn');
         const commForm = document.getElementById('comm-form');
-        const modalClientName = document.getElementById('modal-client-name');
-        const modalClientPhone = document.getElementById('modal-client-phone');
-        const modalClientId = document.getElementById('modal-client-id');
-        const smsDateInput = document.getElementById('sms-date');
-        const waDateInput = document.getElementById('wa-date');
+        const commMessageInput = document.getElementById('comm-message');
+        const charCount = document.getElementById('char-count');
 
-        // --- Initialize App & Load Cloud Data ---
-        async function init() {
+        // --- AUTHENTICATION LOGIC ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Logged in
+                userEmailDisplay.textContent = user.email;
+                loginScreen.classList.add('hidden');
+                globalLoader.classList.add('hidden');
+                appContainer.classList.remove('hidden');
+                initDashboard();
+            } else {
+                // Not logged in
+                appContainer.classList.add('hidden');
+                globalLoader.classList.add('hidden');
+                loginScreen.classList.remove('hidden');
+            }
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-password').value;
+            loginError.classList.add('hidden');
+            
+            signInWithEmailAndPassword(auth, email, pass).catch((error) => {
+                loginError.textContent = "Incorrect email or password. Access denied.";
+                loginError.classList.remove('hidden');
+                loginError.className = "text-sm text-center mt-3 text-red-500";
+            });
+        });
+
+        // Forgot Password Logic
+        forgotPwdBtn.addEventListener('click', () => {
+            const email = document.getElementById('login-email').value.trim();
+            if(!email) {
+                loginError.textContent = "Please enter your email address in the box above first.";
+                loginError.className = "text-sm text-center mt-3 text-red-500";
+                loginError.classList.remove('hidden');
+                return;
+            }
+            sendPasswordResetEmail(auth, email).then(() => {
+                loginError.textContent = "Password reset link sent to your email!";
+                loginError.className = "text-sm text-center mt-3 text-green-600";
+                loginError.classList.remove('hidden');
+            }).catch((error) => {
+                loginError.textContent = "Could not send link. Make sure the email is registered.";
+                loginError.className = "text-sm text-center mt-3 text-red-500";
+                loginError.classList.remove('hidden');
+            });
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth).then(() => {
+                window.clients = [];
+                renderTable();
+            });
+        });
+
+        // --- Initialize Dashboard Data ---
+        async function initDashboard() {
             const options = { year: 'numeric', month: 'short', day: 'numeric' };
             currentDateEl.textContent = new Date().toLocaleDateString('en-US', options);
             
@@ -278,17 +411,17 @@
                 removeLogoBtn.classList.remove('hidden');
             }
 
-            loadingSpinner.classList.remove('hidden');
+            dataSpinner.classList.remove('hidden');
             try {
                 const querySnapshot = await getDocs(clientsCol);
                 window.clients = [];
                 querySnapshot.forEach((doc) => {
-                    window.clients.push({ uid: doc.id, ...doc.data() });
+                    const data = doc.data();
+                    if(!data.communications) data.communications = []; 
+                    window.clients.push({ uid: doc.id, ...data });
                 });
-            } catch(e) {
-                console.error("Firebase Connection Error: ", e);
-            }
-            loadingSpinner.classList.add('hidden');
+            } catch(e) { console.error(e); }
+            dataSpinner.classList.add('hidden');
             renderTable();
         }
 
@@ -326,14 +459,12 @@
 
         addClientForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            loadingSpinner.classList.remove('hidden');
-
+            dataSpinner.classList.remove('hidden');
             const newClientData = {
                 idNumber: document.getElementById('id-number').value.trim(),
                 fullName: document.getElementById('full-name').value.trim(),
                 phoneNumber: document.getElementById('phone-number').value.trim(),
-                smsDate: '',
-                waDate: '',
+                communications: [],
                 adminWork: false,
                 legalWork: ''
             };
@@ -342,53 +473,38 @@
                 const docRef = await addDoc(clientsCol, newClientData);
                 newClientData.uid = docRef.id; 
                 window.clients.push(newClientData);
-                
                 addClientForm.reset(); 
                 addClientContainer.classList.add('hidden');
                 formToggleIcon.classList.remove('rotate-180');
-            } catch (error) {
-                console.error("Error adding document: ", error);
-                alert("Failed to save to database.");
-            }
-
-            loadingSpinner.classList.add('hidden');
+            } catch (e) { alert("Database restricted: Are you logged in with the admin email?"); }
+            dataSpinner.classList.add('hidden');
             renderTable(); 
         });
 
         csvUploadInput.addEventListener('change', async function(e) {
             const file = e.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = async function(event) {
-                loadingSpinner.classList.remove('hidden');
-                const text = event.target.result;
-                const lines = text.split(/\r?\n/);
-                
+                dataSpinner.classList.remove('hidden');
+                const lines = event.target.result.split(/\r?\n/);
                 let addedCount = 0;
                 for(let line of lines) {
-                    if (line.trim() === '') continue;
                     const cols = line.split(',');
-                    if (cols.length >= 3) {
-                        const id = cols[0].trim();
-                        const name = cols[1].trim();
-                        const phone = cols[2].trim();
-                        if (id && name) {
-                            const newClientData = { idNumber: id, fullName: name, phoneNumber: phone, smsDate: '', waDate: '', adminWork: false, legalWork: '' };
-                            try {
-                                const docRef = await addDoc(clientsCol, newClientData);
-                                newClientData.uid = docRef.id;
-                                window.clients.push(newClientData);
-                                addedCount++;
-                            } catch(e) { console.error(e); }
-                        }
+                    if (cols.length >= 3 && cols[0].trim() && cols[1].trim()) {
+                        const newClientData = { idNumber: cols[0].trim(), fullName: cols[1].trim(), phoneNumber: cols[2].trim(), communications: [], adminWork: false, legalWork: '' };
+                        try {
+                            const docRef = await addDoc(clientsCol, newClientData);
+                            newClientData.uid = docRef.id;
+                            window.clients.push(newClientData);
+                            addedCount++;
+                        } catch(e) { }
                     }
                 }
-                loadingSpinner.classList.add('hidden');
-                alert(`Successfully imported ${addedCount} clients directly into Firebase.`);
+                dataSpinner.classList.add('hidden');
+                alert(`Successfully imported ${addedCount} clients.`);
                 csvUploadInput.value = ''; 
                 addClientContainer.classList.add('hidden');
-                formToggleIcon.classList.remove('rotate-180');
                 renderTable();
             };
             reader.readAsText(file);
@@ -401,7 +517,6 @@
                 const column = header.getAttribute('data-sort');
                 if (window.currentSortColumn === column) window.isSortDescending = !window.isSortDescending;
                 else { window.currentSortColumn = column; window.isSortDescending = false; }
-                
                 sortableHeaders.forEach(h => h.querySelector('i').className = 'ph ph-arrows-down-up text-gray-400');
                 header.querySelector('i').className = window.isSortDescending ? 'ph ph-sort-descending text-blue-600' : 'ph ph-sort-ascending text-blue-600';
                 renderTable();
@@ -416,43 +531,58 @@
         });
 
         deleteSelectedBtn.addEventListener('click', async function() {
-            if(confirm(`Delete ${window.selectedClients.size} clients permanently from database?`)) {
-                loadingSpinner.classList.remove('hidden');
+            if(confirm(`Delete ${window.selectedClients.size} clients permanently?`)) {
+                dataSpinner.classList.remove('hidden');
                 for (let uid of window.selectedClients) {
                     try {
                         await deleteDoc(doc(db, "clients", uid)); 
                         window.clients = window.clients.filter(c => c.uid !== uid); 
-                    } catch(e) { console.error(e); }
+                    } catch(e) { }
                 }
                 window.selectedClients.clear();
-                loadingSpinner.classList.add('hidden');
+                dataSpinner.classList.add('hidden');
                 renderTable();
             }
         });
 
+        // --- NEW COMMUNICATION LOGIC ---
+        
+        // Character Counter for Message
+        commMessageInput.addEventListener('input', function() {
+            charCount.textContent = `${this.value.length}/360`;
+            charCount.className = this.value.length >= 360 ? "text-xs font-semibold text-red-500" : "text-xs font-semibold text-gray-400";
+        });
+
         commForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            const uid = modalClientId.value;
+            const uid = document.getElementById('modal-client-id').value;
             const clientIndex = window.clients.findIndex(c => c.uid === uid);
             
             if (clientIndex !== -1) {
-                const updates = { smsDate: smsDateInput.value, waDate: waDateInput.value };
-                window.clients[clientIndex].smsDate = updates.smsDate;
-                window.clients[clientIndex].waDate = updates.waDate;
+                const type = document.querySelector('input[name="comm-type"]:checked').value;
+                const date = document.getElementById('comm-date').value;
+                const message = commMessageInput.value.trim();
+
+                const newComm = { type, date, message, timestamp: Date.now() };
                 
-                try { await updateDoc(doc(db, "clients", uid), updates); } 
+                if(!window.clients[clientIndex].communications) window.clients[clientIndex].communications = [];
+                window.clients[clientIndex].communications.push(newComm);
+                
+                window.clients[clientIndex].communications.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+                try { await updateDoc(doc(db, "clients", uid), { communications: window.clients[clientIndex].communications }); } 
                 catch(e) { console.error(e); }
             }
             closeModal();
             renderTable();
         });
 
+        // --- Global Inline Functions ---
         window.updateAdminWork = async function(uid, isChecked) {
             const client = window.clients.find(c => c.uid === uid);
             if (client) {
                 client.adminWork = isChecked;
-                try { await updateDoc(doc(db, "clients", uid), { adminWork: isChecked }); } 
-                catch(e) { console.error(e); }
+                try { await updateDoc(doc(db, "clients", uid), { adminWork: isChecked }); } catch(e) {}
             }
         };
 
@@ -461,8 +591,7 @@
             if (client) {
                 client.legalWork = isChecked ? type : ''; 
                 renderTable(); 
-                try { await updateDoc(doc(db, "clients", uid), { legalWork: client.legalWork }); } 
-                catch(e) { console.error(e); }
+                try { await updateDoc(doc(db, "clients", uid), { legalWork: client.legalWork }); } catch(e) {}
             }
         };
 
@@ -475,11 +604,16 @@
         window.openModal = function(clientUid) {
             const client = window.clients.find(c => c.uid === clientUid);
             if (!client) return;
-            modalClientName.textContent = client.fullName;
-            modalClientPhone.textContent = client.phoneNumber;
-            modalClientId.value = client.uid;
-            smsDateInput.value = client.smsDate || '';
-            waDateInput.value = client.waDate || '';
+            document.getElementById('modal-client-name').textContent = client.fullName;
+            document.getElementById('modal-client-phone').textContent = client.phoneNumber;
+            document.getElementById('modal-client-id').value = client.uid;
+            
+            // Reset form for new entry
+            commForm.reset();
+            charCount.textContent = "0/360";
+            charCount.className = "text-xs font-semibold text-gray-400";
+            document.getElementById('comm-date').value = new Date().toISOString().split('T')[0];
+
             modalBackdrop.classList.remove('hidden');
             setTimeout(() => { modal.classList.add('modal-enter-active'); modal.classList.remove('modal-enter'); }, 10);
         };
@@ -489,11 +623,11 @@
             modal.classList.add('modal-enter');
             setTimeout(() => modalBackdrop.classList.add('hidden'), 200);
         }
-        
-        closeModalBtn.addEventListener('click', closeModal);
-        cancelModalBtn.addEventListener('click', closeModal);
+        document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+        document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
         modalBackdrop.addEventListener('click', (e) => { if (e.target === modalBackdrop) closeModal(); });
 
+        // --- Render Helpers ---
         function getFilteredAndSortedClients() {
             let filtered = window.clients;
             if (window.searchQuery) {
@@ -506,10 +640,6 @@
                 filtered.sort((a, b) => {
                     let valA = a[window.currentSortColumn] || '';
                     let valB = b[window.currentSortColumn] || '';
-                    if (window.currentSortColumn === 'status') {
-                        valA = (a.smsDate ? 1 : 0) + (a.waDate ? 1 : 0);
-                        valB = (b.smsDate ? 1 : 0) + (b.waDate ? 1 : 0);
-                    }
                     if (typeof valA === 'string') valA = valA.toLowerCase();
                     if (typeof valB === 'string') valB = valB.toLowerCase();
                     if (valA < valB) return window.isSortDescending ? 1 : -1;
@@ -540,7 +670,6 @@
 
             if (displayClients.length === 0) {
                 emptyState.classList.remove('hidden');
-                emptyStateText.textContent = window.searchQuery ? "No clients match your search." : "No clients added yet.";
                 selectAllCheckbox.disabled = true;
             } else {
                 emptyState.classList.add('hidden');
@@ -549,42 +678,60 @@
                 displayClients.forEach(client => {
                     const tr = document.createElement('tr');
                     const isSelected = window.selectedClients.has(client.uid);
-                    tr.className = `transition-colors group ${isSelected ? 'bg-blue-50/70' : 'hover:bg-gray-50'}`;
+                    tr.className = `transition-colors ${isSelected ? 'bg-blue-50/70' : 'hover:bg-gray-50'}`;
                     
-                    let statusHtml = '<span class="text-gray-400 italic text-xs">No comms</span>';
-                    let badges = [];
-                    if (client.smsDate) badges.push(`<span class="inline-flex items-center gap-1 bg-green-100 text-green-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-green-200" title="SMS Date: ${client.smsDate}"><i class="ph ph-chat-circle-text"></i> SMS</span>`);
-                    if (client.waDate) badges.push(`<span class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-emerald-200" title="WhatsApp Date: ${client.waDate}"><i class="ph ph-whatsapp-logo"></i> WA</span>`);
-                    if (badges.length > 0) statusHtml = `<div class="flex flex-col gap-1 items-center justify-center">${badges.join('')}</div>`;
+                    // History Dropdown HTML construction
+                    let historyHtml = '';
+                    if(client.communications && client.communications.length > 0) {
+                        const logsHtml = client.communications.map(comm => `
+                            <div class="bg-white rounded p-2.5 text-xs text-gray-700 shadow-sm border border-gray-200 mt-2">
+                                <div class="flex items-center justify-between font-bold mb-1 ${comm.type === 'wa' ? 'text-emerald-700' : 'text-blue-700'}">
+                                    <span class="flex items-center gap-1.5"><i class="ph ${comm.type === 'wa' ? 'ph-whatsapp-logo text-emerald-500' : 'ph-chat-circle-text text-blue-500'} text-sm"></i> ${comm.type === 'wa' ? 'WhatsApp' : 'SMS'}</span>
+                                    <span class="text-gray-400 font-normal text-[10px]">${new Date(comm.date).toLocaleDateString('en-GB')}</span>
+                                </div>
+                                <p class="leading-relaxed whitespace-pre-wrap break-words">${comm.message}</p>
+                            </div>
+                        `).join('');
+
+                        historyHtml = `
+                            <details class="mt-2.5 group">
+                                <summary class="text-xs font-semibold text-blue-600 hover:text-blue-800 cursor-pointer list-none flex items-center gap-1 select-none transition-colors">
+                                    <i class="ph ph-caret-right group-open:rotate-90 transition-transform"></i>
+                                    View Comm History (${client.communications.length})
+                                </summary>
+                                <div class="mt-1 pl-1 border-l-2 border-blue-100 max-h-48 overflow-y-auto custom-scrollbar pr-2">
+                                    ${logsHtml}
+                                </div>
+                            </details>
+                        `;
+                    }
 
                     tr.innerHTML = `
-                        <td class="px-4 py-4 text-center border-r border-gray-100">
-                            <input type="checkbox" onchange="toggleRowSelection('${client.uid}', this.checked)" ${isSelected ? 'checked' : ''} class="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 shadow-sm">
+                        <td class="px-4 py-4 text-center border-r border-gray-100 align-top pt-5">
+                            <input type="checkbox" onchange="toggleRowSelection('${client.uid}', this.checked)" ${isSelected ? 'checked' : ''} class="w-4 h-4 rounded border-gray-400">
                         </td>
-                        <td class="px-6 py-4 font-mono text-gray-600">${client.idNumber}</td>
-                        <td class="px-6 py-4 font-medium text-gray-800">${client.fullName}</td>
-                        <td class="px-6 py-4">
-                            <button onclick="openModal('${client.uid}')" class="inline-flex items-center gap-2 bg-white text-blue-700 hover:bg-blue-600 hover:text-white px-3 py-1.5 rounded-md font-medium transition-colors border border-gray-200 hover:border-blue-600 w-full sm:w-auto text-left shadow-sm">
+                        <td class="px-6 py-4 font-mono text-gray-600 align-top pt-5">${client.idNumber}</td>
+                        <td class="px-6 py-4 font-medium text-gray-800 align-top pt-5">${client.fullName}</td>
+                        <td class="px-6 py-4 align-top pt-4">
+                            <button onclick="openModal('${client.uid}')" class="inline-flex items-center gap-2 bg-white text-blue-700 hover:bg-blue-600 hover:text-white px-3 py-1.5 rounded-md font-medium transition-colors border border-gray-200 hover:border-blue-600 shadow-sm w-max">
                                 <i class="ph ph-phone text-lg"></i> ${client.phoneNumber}
                             </button>
+                            ${historyHtml}
                         </td>
-                        <td class="px-6 py-4 text-center align-middle">
-                            <input type="checkbox" onchange="updateAdminWork('${client.uid}', this.checked)" ${client.adminWork ? 'checked' : ''} class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 shadow-sm">
+                        <td class="px-6 py-4 text-center align-top pt-5">
+                            <input type="checkbox" onchange="updateAdminWork('${client.uid}', this.checked)" ${client.adminWork ? 'checked' : ''} class="w-5 h-5 rounded border-gray-300">
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 align-top pt-5">
                             <div class="flex flex-col items-center justify-center gap-1.5 w-max mx-auto">
                                 <label class="inline-flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded transition-colors w-full">
-                                    <input type="checkbox" onchange="updateLegalWork('${client.uid}', 'NCT', this.checked)" ${client.legalWork === 'NCT' ? 'checked' : ''} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 shadow-sm">
+                                    <input type="checkbox" onchange="updateLegalWork('${client.uid}', 'NCT', this.checked)" ${client.legalWork === 'NCT' ? 'checked' : ''} class="w-4 h-4 rounded border-gray-300">
                                     <span class="text-sm font-medium ${client.legalWork === 'NCT' ? 'text-blue-700' : 'text-gray-600'}">NCT</span>
                                 </label>
                                 <label class="inline-flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded transition-colors w-full">
-                                    <input type="checkbox" onchange="updateLegalWork('${client.uid}', 'Mags', this.checked)" ${client.legalWork === 'Mags' ? 'checked' : ''} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 shadow-sm">
+                                    <input type="checkbox" onchange="updateLegalWork('${client.uid}', 'Mags', this.checked)" ${client.legalWork === 'Mags' ? 'checked' : ''} class="w-4 h-4 rounded border-gray-300">
                                     <span class="text-sm font-medium ${client.legalWork === 'Mags' ? 'text-blue-700' : 'text-gray-600'}">Mags</span>
                                 </label>
                             </div>
-                        </td>
-                        <td class="px-6 py-4 text-center align-middle">
-                            ${statusHtml}
                         </td>
                     `;
                     clientTableBody.appendChild(tr);
@@ -592,8 +739,6 @@
             }
             updateSelectionUI();
         }
-
-        init();
 
     </script>
 </body>
